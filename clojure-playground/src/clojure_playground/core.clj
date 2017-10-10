@@ -1,43 +1,21 @@
 (ns clojure-playground.core (:gen-class))
 
 (use '[clojure.string :only (split triml)])
-
-(defn readin []
-;;  (with-in-str (slurp "D:\\Cygwin\\home\\Developer\\hack4fun\\clojure-playground\\src\\clojure_playground\\input.txt")
-  (with-in-str "7\n100 100 50 40 40 20 10\n4\n5 25 50 120"
-   ;; expected output: 6, 4, 2, 1
-
-    (let [n (Integer/parseInt (read-line))
-          s (into [] (sort > (into #{} (map #(Integer/parseInt %) (split (read-line) #"\s+")))))
-          m (Integer/parseInt (read-line))
-          a (vec (map #(Integer/parseInt %) (split (read-line) #"\s+")))]
-      (println s)
-      (println a)
-      (loop [s s
-             a a]
-        (if (empty? a)
-          nil
-          (let [new-s (loop [new-s s] (if (> (last s) (first a)) new-s (recur (butlast s))))]
-            (println (inc (count new-s)))
-            (recur new-s (rest a))))))))
-
-    ;; (loop [s s
-    ;;        a a]
-    ;;   (if (empty? a)
-    ;;     nil
-    ;;     (let [new-s (loop [new-s s] (if (> (last s) (first a)) new-s (recur (butlast s))))]
-    ;;       (println (inc (count new-s)))
-    ;;       (recur new-s (rest a)))))))
-
-;; (let [n (Integer/parseInt (read-line))
-;;       s (vec (map #(Integer/parseInt %) (split (read-line) #"\s+")))
-;;       m (Integer/parseInt (read-line))
-;;       a (vec (map #(Integer/parseInt %) (split (read-line) #"\s+")))]
-;;   (loop [s s
-;;          a a]
-;;     (if (empty? a)
-;;       nil
-;;       (let [rank 2]
-;;         (println (inc (count (filter #(> % (first a)) (into #{} s)))))
-;;         (recur s (rest a))))))
-;; )
+;; 2998
+(defn testing []
+(with-in-str "1 2000000 1000000000"
+(let [[i j k] (map #(Integer/parseInt %) (split (read-line) #"\s+"))
+      c       (loop [i i c 0] (if (> i j) c
+                                  (let [r (Long/parseLong (apply str (reverse (str i))))
+                                        d (Math/abs (- i r))]
+                                    (recur (inc i)
+                                           (if (zero? (rem d k)) (inc c) c)))))]
+  (println c))))
+;; (with-in-str "1 2000000 1000000000"
+;; (let [[i j k] (map #(Integer/parseInt %) (split (read-line) #"\s+"))
+;;       c       (doall (loop [i i c 0] (if (> i j) c
+;;                                          (let [r (Integer/parseInt (apply str (reverse (str i))))
+;;                                                d (Math/abs (- i r))]
+;;                                            (recur (inc i)
+;;                                                   (if (zero? (rem d k)) (inc c) c))))))]
+;;   (println c)))
